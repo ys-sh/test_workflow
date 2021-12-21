@@ -24,15 +24,15 @@ jobs:
         with:
           fetch-depth: 0
       - name: version tag
+        uses: bakunyo/git-pr-release-action@master
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
-          git push origin $TAG_VERSION
-      - name: Create a release pull request
-        uses: bakunyo/git-pr-release-action@master
+          git checkout -b release-$TAG_VERSION
+          git push origin release-$TAG_VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_PR_RELEASE_BRANCH_PRODUCTION: release
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: release-$TAG_VERSION
           GIT_PR_RELEASE_BRANCH_STAGING: master
-          GIT_PR_RELEASE_LABELS: release
+          GIT_PR_RELEASE_LABELS: release-$TAG_VERSION
           NODE_VERSION: v${{ steps.package-version.outputs.current-version}}
           GIT_PR_RELEASE_TEMPLATE: .git-pr-release-template
