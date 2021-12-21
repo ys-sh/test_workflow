@@ -8,6 +8,7 @@ service Sample {
 
 message User {
   string name = 1;
+  string test = 2;
 }
 
 message Result {
