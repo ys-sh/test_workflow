@@ -26,5 +26,4 @@ jobs:
       - name: version tag
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
-          git tag $TAG_VERSION
-          git push origin $MODULE_VERSION
+          git push origin $TAG_VERSION
