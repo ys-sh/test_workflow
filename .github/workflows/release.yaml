@@ -37,9 +37,6 @@ jobs:
         with:
           tag_name: ${{ steps.step-tag.outputs.VERSION }}
           release_name: Release ${{ steps.step-tag.outputs.VERSION }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          body: ${{ github.event.pull_request.body }}
           draft: false
           prerelease: false
