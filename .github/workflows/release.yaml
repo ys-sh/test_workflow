@@ -31,15 +31,13 @@ jobs:
         id: step-tag
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
-          git checkout release
-
           git push origin $TAG_VERSION
           echo "::set-output name=VERSION::${TAG_VERSION}"
       - name: Create a release pull request
         uses: bakunyo/git-pr-release-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_PR_RELEASE_BRANCH_PRODUCTION: release
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: master
           GIT_PR_RELEASE_BRANCH_STAGING: master
-          GIT_PR_RELEASE_LABELS: release
+          GIT_PR_RELEASE_LABELS: master
           GIT_PR_RELEASE_TEMPLATE: .git-pr-release-template
