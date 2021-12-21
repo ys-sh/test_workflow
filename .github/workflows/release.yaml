@@ -24,13 +24,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: version tag
+        id: step-tag
         uses: bakunyo/git-pr-release-action@master
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
           git checkout -b release-$TAG_VERSION
           git push origin release-$TAG_VERSION
           echo "::set-output name=VERSION::${TAG_VERSION}"
-       id: step-tag
       - name: Create a release pull request
         uses: bakunyo/git-pr-release-action@master
         env:
