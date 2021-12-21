@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/amothic/sample-proto/go/pb";
+
+service Sample {
+  rpc MakeUser (User) returns (Result);
+}
+
+message User {
+  string name = 1;
+}
+
+message Result {
+  string userId = 1;
+}
