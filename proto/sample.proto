@@ -13,5 +13,5 @@ message User {
 }
 
 message Result {
-  string test = 1;
+  string alpha = 1;
 }
