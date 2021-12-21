@@ -1,0 +1,22 @@
+name: Generate gRPC code
+on:
+  push:
+    branches: main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Regenerate gRPC code
+        run: |
+          make build
+      - name: Commit
+        run: |
+          [[ ! $(git diff --exit-code go ts) ]] && echo "Nothing to commit." && exit 0
+          git config user.name "gRPC Bot"
+          git pull
+          TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
+          git tag $TAG_VERSION
+          git commit -m "chore: regenerate grpc code"
+          git push
