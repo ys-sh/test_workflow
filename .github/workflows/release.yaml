@@ -23,20 +23,23 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
       - name: version tag
         id: step-tag
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
-          git checkout -b release-$TAG_VERSION
-          git push origin release-$TAG_VERSION
+          git checkout release
+
+          git push origin $TAG_VERSION
           echo "::set-output name=VERSION::${TAG_VERSION}"
       - name: Create a release pull request
-        run: |
-          gem install -N git-pr-release -v "1.2.0"
-          git-pr-release --no-fetch
+        uses: bakunyo/git-pr-release-action@master
         env:
-          GIT_PR_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_PR_RELEASE_BRANCH_PRODUCTION: release-${{ steps.step-tag.outputs.VERSION }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: release
           GIT_PR_RELEASE_BRANCH_STAGING: master
           GIT_PR_RELEASE_LABELS: release
           GIT_PR_RELEASE_TEMPLATE: .git-pr-release-template
