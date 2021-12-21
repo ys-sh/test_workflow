@@ -23,21 +23,23 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.x
       - name: version tag
         id: step-tag
         run: |
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
           git push origin $TAG_VERSION
           echo "::set-output name=VERSION::${TAG_VERSION}"
-      - name: Create a release pull request
-        uses: bakunyo/git-pr-release-action@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_PR_RELEASE_BRANCH_PRODUCTION: master
-          GIT_PR_RELEASE_BRANCH_STAGING: master
-          GIT_PR_RELEASE_LABELS: master
-          GIT_PR_RELEASE_TEMPLATE: .git-pr-release-template
+        with:
+          tag_name: ${{ steps.step-tag.outputs.VERSION }}
+          release_name: Release ${{ steps.step-tag.outputs.VERSION }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
