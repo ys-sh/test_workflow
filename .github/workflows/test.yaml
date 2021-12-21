@@ -3,6 +3,14 @@ on:
   push:
     branches: main
 jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: kyoh86/git-vertag-action@v1.1
+        with:
+          method: ${{ github.event.inputs.method }}
+          push: true
   build:
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +31,7 @@ jobs:
           make build
       - name: Commit
         run: |
+          [[ ! $(git diff --exit-code pb) ]] && echo "Nothing to commit." && exit 0
           git config user.name "gRPC Bot"
           git pull
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
