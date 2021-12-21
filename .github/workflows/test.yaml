@@ -23,7 +23,6 @@ jobs:
           make build
       - name: Commit
         run: |
-          [[ ! $(git diff --exit-code pb) ]] && echo "Nothing to commit." && exit 0
           git config user.name "gRPC Bot"
           git pull
           git commit -m "chore: regenerate grpc code"
