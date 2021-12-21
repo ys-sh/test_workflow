@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/amothic/sample-proto/go/pb";
+option go_package = "pb";
 
 service Sample {
   rpc MakeUser (User) returns (Result);
