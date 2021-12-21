@@ -23,7 +23,6 @@ jobs:
           make build
       - name: Commit
         run: |
-          [[ ! $(git diff --exit-code go ts) ]] && echo "Nothing to commit." && exit 0
           git config user.name "gRPC Bot"
           git pull
           TAG_VERSION=$(git describe --tags --abbrev=0 --match='v*.*.*')
